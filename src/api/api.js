@@ -1,11 +1,17 @@
 import { clearUserData, getUserData } from "../views/utils.js";
 
-const host = "http://localhost:3030";
+const host = "https://parseapi.back4app.com";
+const appId = '5IgptbDbqGJyL9jrN0E22H5aNErlrsLT95wsmYj5'
+const apiKey = 'zmEGoj97JNp8xgy993p8yEuj5wC4tehdpf6Zqh7H'
 
 async function request(method, url, body) {
   const options = {
     method,
-    headers: {},
+    headers: {
+      'X-Parse-Application-Id': appId,
+      'X-Parse-REST-API-Key': apiKey,
+      'X-Parse-Revocable-Session': 1
+    },
   };
 
   if (body != undefined) {
@@ -15,7 +21,7 @@ async function request(method, url, body) {
 
   const userData = getUserData()
   if (userData != null) {
-    options.headers["X-Authorization"] = userData.accessToken;
+    options.headers["X-Authorization"] = userData.sessionToken;
   }
 
   try {
@@ -26,7 +32,7 @@ async function request(method, url, body) {
     }
 
     if (res.ok == false) {
-      if (res.status === 403) {
+      if (data.code === 209) {
         clearUserData();
       }
       const error = data;

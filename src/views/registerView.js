@@ -7,7 +7,7 @@ const registerTemplate = (onSubmit) => html`
   <div class="form">
     <h2>Register</h2>
     <form @submit=${onSubmit} class="login-form">
-      <input type="text" name="email" id="register-email" placeholder="email"/>
+      <input type="text" name="username" id="register-email" placeholder="email"/>
       <input type="password" name="password" id="register-password" placeholder="password"/>
       <input type="password" name="re-password" id="repeat-password" placeholder="repeat password"/>
       <button type="submit">login</button>
@@ -19,16 +19,16 @@ const registerTemplate = (onSubmit) => html`
 export function registerPage(ctx) {
   ctx.render(registerTemplate(createSubmitHandler(onRegister)))
 
-  async function onRegister({ email, password, ["re-password"]: repass }) {
+  async function onRegister({ username, password, ["re-password"]: repass }) {
     let error = ''
-    if (!email || !password) {
+    if (!username || !password) {
       return alert('All fields are required!');
     }
     if (password != repass) {
       return alert("Passwords don't match!")
     }
 
-    await registerUser(email, password, repass);
+    await registerUser(username, password);
     ctx.page.redirect('/dashboard');
   }
 }
