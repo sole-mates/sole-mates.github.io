@@ -1,6 +1,6 @@
-import { html } from '../../node_modules/lit-html/lit-html.js'
+import { html } from '../../lit-html/lit-html.js'
 import { logoutUser } from '../api/auth.js'
-import page from '../../node_modules/page/page.mjs'
+import page from '../../page/page.mjs'
 
 export const navTemplate = (isUser) => html`
     <header>

@@ -1,4 +1,4 @@
-import { html } from '../../node_modules/lit-html/lit-html.js'
+import { html } from '../../lit-html/lit-html.js'
 import { createShoe } from '../api/data.js'
 import { createSubmitHandler } from './utils.js'
 
@@ -19,14 +19,14 @@ const createTemplate = (onSubmit) => html`
 </section>`
 
 export async function createPage(ctx) {
-    ctx.render(createTemplate(createSubmitHandler(onCreate)))
+  ctx.render(createTemplate(createSubmitHandler(onCreate)))
 
-    async function onCreate(data) {
-        if (Object.values(data).some(key => key === '')) {
-            return alert('All fields are required!')
-        }
-        const { brand, model, imageUrl, release, designer, value } = data;
-        await createShoe({ brand, model, imageUrl, release, designer, value });
-        ctx.page.redirect('/dashboard')
+  async function onCreate(data) {
+    if (Object.values(data).some(key => key === '')) {
+      return alert('All fields are required!')
     }
+    const { brand, model, imageUrl, release, designer, value } = data;
+    await createShoe({ brand, model, imageUrl, release, designer, value });
+    ctx.page.redirect('/dashboard')
+  }
 }

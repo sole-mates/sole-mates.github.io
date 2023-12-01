@@ -1,4 +1,4 @@
-import { html } from '../../node_modules/lit-html/lit-html.js'
+import { html } from '../../lit-html/lit-html.js'
 import { editShoeById, getItemById } from '../api/data.js'
 import { createSubmitHandler } from './utils.js'
 
