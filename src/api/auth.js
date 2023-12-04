@@ -28,7 +28,9 @@ export async function loginUser(username, password) {
 }
 
 export async function logoutUser() {
-  const sessionToken = getUserData().sessionToken;
+  const user = getUserData()
+  const sessionToken = user.sessionToken;
+
   try {
     const sessions = await get(endpoints.sessionByToken(sessionToken));
     const [currentSession] = sessions.results;
