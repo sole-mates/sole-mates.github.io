@@ -1,5 +1,6 @@
 import { html } from '../../lit-html/lit-html.js'
 import { editShoeById, getItemById } from '../api/data.js'
+import { addOwner } from '../api/queries.js'
 import { createSubmitHandler } from './utils.js'
 
 const editTemplate = (data, onSubmit) => html`
@@ -23,12 +24,13 @@ export async function editPage(ctx) {
   const itemData = await getItemById(itemId);
   ctx.render(editTemplate(itemData, createSubmitHandler(onEdit)))
 
-  async function onEdit(data) {
-    if (Object.values(data).some(key => key === '')) {
+  async function onEdit(formData) {
+    if (Object.values(formData).some(key => key === '')) {
       return alert('All fields are required!')
     }
-    const { brand, model, imageUrl, release, designer, value } = data;
-    await editShoeById(itemId, { brand, model, imageUrl, release, designer, value });
+    const { brand, model, imageUrl, release, designer, value } = formData;
+    const data = addOwner({ brand, model, imageUrl, release, designer, value })
+    await editShoeById(itemId, data);
     ctx.page.redirect(`/details/${itemId}`)
   }
 }

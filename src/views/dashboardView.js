@@ -19,10 +19,10 @@ const itemCard = (data) => html`
     <p><strong>Model: </strong><span class="model">${data.model}</span>
     </p>
     <p><strong>Value:</strong><span class="value">${data.value}</span>$</p>
-    <a class="details-btn" href="/details/${data._id}">Details</a>
+    <a class="details-btn" href="/details/${data.objectId}">Details</a>
 </li>`
 
 export async function dashboardPage(ctx) {
     const allProducts = await getAllItems();
-    ctx.render(dashboardTemplate(allProducts))
+    ctx.render(dashboardTemplate(allProducts.results))
 }

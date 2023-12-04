@@ -20,8 +20,9 @@ async function request(method, url, body) {
   }
 
   const userData = getUserData()
-  if (userData != null) {
-    options.headers["X-Authorization"] = userData.sessionToken;
+  if (userData) {
+    const token = userData.sessionToken;
+    options.headers['X-Parse-Session-Token'] = token;
   }
 
   try {
@@ -36,11 +37,16 @@ async function request(method, url, body) {
         clearUserData();
       }
       const error = data;
-      throw error;
+      throw {
+        message: error.error,
+        handled: false
+      };
     }
+
     return data;
+
   } catch (error) {
-    alert(`Error: ${error.message}`)
+    alert(error.message);
     throw error;
   }
 }

@@ -2,7 +2,7 @@ import { registerUser } from "../api/auth.js";
 import { createSubmitHandler } from "./utils.js";
 import { html } from '../../lit-html/lit-html.js'
 
-const registerTemplate = (onSubmit) => html`
+const registerTemplate = (onSubmit, error) => html`
 <section id="register">
   <div class="form">
     <h2>Register</h2>
@@ -10,6 +10,7 @@ const registerTemplate = (onSubmit) => html`
       <input type="text" name="username" id="register-email" placeholder="email"/>
       <input type="password" name="password" id="register-password" placeholder="password"/>
       <input type="password" name="re-password" id="repeat-password" placeholder="repeat password"/>
+      ${error ? html`<p class='error'>${error}</p>` : null}
       <button type="submit">login</button>
       <p class="message">Already registered? <a href="/login">Login</a></p>
     </form>
@@ -22,13 +23,22 @@ export function registerPage(ctx) {
   async function onRegister({ username, password, ["re-password"]: repass }) {
     let error = ''
     if (!username || !password) {
-      return alert('All fields are required!');
+      error = 'All fields are required!'
     }
     if (password != repass) {
-      return alert("Passwords don't match!")
+      error = "Passwords don't match!"
+    }
+    if (error) {
+      ctx.render(registerTemplate(createSubmitHandler(onRegister), error));
+      return
     }
 
-    await registerUser(username, password);
-    ctx.page.redirect('/dashboard');
+    try {
+      await registerUser(username, password);
+      ctx.page.redirect('/dashboard');
+    } catch (error) {
+      error = error.message;
+      ctx.render(registerTemplate(createSubmitHandler(onRegister), error))
+    }
   }
 }

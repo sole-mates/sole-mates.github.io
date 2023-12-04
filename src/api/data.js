@@ -1,8 +1,9 @@
+import { getUserData } from "../views/utils.js";
 import { get, post, put, del } from "./api.js";
 
 const endpoints = {
-  allItems: "/data/shoes?sortBy=_createdOn%20desc",
-  shoes: '/data/shoes'
+  allItems: "/classes/shoes",
+  shoes: '/classes/shoes'
 };
 
 export function getAllItems() {
@@ -13,6 +14,12 @@ export function getItemById(id) {
   )
 }
 export function createShoe(data) {
+  const user = getUserData()
+  data.ownerId = {
+    __type: 'Pointer',
+    className: '_User',
+    objectId: user.objectId
+  }
   return post(endpoints.shoes, data);
 }
 export function deleteShoe(id) {

@@ -20,7 +20,7 @@ const detailsTemplate = (data, onDelete) => html`
         </div>
       ${data.owner == true ? html`
       <div id="action-buttons">
-          <a href="/edit/${data._id}" id="edit-btn">Edit</a>
+          <a href="/edit/${data.objectId}" id="edit-btn">Edit</a>
           <a @click=${onDelete} href="javascript:void(0)" id="delete-btn">Delete</a>
         </div>` : ''}
     </div>
@@ -30,7 +30,8 @@ export async function detailsPage(ctx) {
   const itemId = ctx.params.id;
   const itemData = await getItemById(itemId);
   const user = getUserData();
-  if (user && user._id === itemData._ownerId) {
+
+  if (user && user.objectId === itemData.ownerId.objectId) {
     itemData.owner = true;
   }
   ctx.render(detailsTemplate(itemData, onDelete))
