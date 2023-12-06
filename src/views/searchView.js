@@ -23,16 +23,16 @@ const searchTemplate = (onSubmit, data, user) => html`
 
 const cardLiTemplate = (data, user) => html`
 <li class="card">
-  <img src="./images/travis.jpg" alt="travis" />
+  <img src=${data.imageUrl} alt=${data.brand} />
   <p>
-    <strong>Brand: </strong><span class="brand">Air Jordan</span>
+    <strong>Brand: </strong><span class="brand">${data.brand}</span>
   </p>
   <p>
     <strong>Model: </strong
-    ><span class="model">1 Retro High TRAVIS SCOTT</span>
+    ><span class="model">${data.model}</span>
   </p>
-  <p><strong>Value:</strong><span class="value">2000</span>$</p>
-  ${user ? html`<a class="details-btn" href="/details/${data._id}">Details</a>` : null}
+  <p><strong>Value:</strong><span class="value">${data.value}</span>$</p>
+  <a class="details-btn" href="/details/${data.objectId}">Details</a>
 </li>`
 
 export async function searchPage(ctx) {
@@ -41,7 +41,8 @@ export async function searchPage(ctx) {
   async function onSearch({ search }, form) {
     if (!search) { return alert("Search field can't be empty!") }
     form.reset();
-    const searchResults = await searchByQuery(search);
+    const searchData = await searchByQuery(search);
+    const searchResults = searchData.results
     console.log(searchResults)
     const user = getUserData()
     ctx.render(searchTemplate(createSubmitHandler(onSearch), searchResults, user))

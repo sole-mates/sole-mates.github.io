@@ -22,12 +22,3 @@ export function pointer(className, objectId) {
         objectId
     };
 }
-
-export const gamePointer = pointer.bind(null, 'Game');
-export const islandPointer = pointer.bind(null, 'Island');
-
-export function filter(fieldName, value) {
-    const query = JSON.stringify({ [fieldName]: value });
-
-    return `where=${encodeURIComponent(query)}`;
-}
